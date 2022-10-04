@@ -1,40 +1,15 @@
-function randomNumber (min, max) {
-  if ((min > max) && ((min >= 0) && (max >= 0))) {
-    swapMinMax(min, max);
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; // mdm web docs
+const getRandomNumber = (min, max, count = 0) => {
+  if (min < 0 || max < 0 || max === min) {
+    return NaN;
   }
 
-  else if ((min >= 0) && (max >= 0)){
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  if (min > max) {
+    [min, max] = [max , min];
   }
 
-  return NaN;
-}
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return +((Math.random() * (max - min)) + min).toFixed(count);
+};
 
-function swapMinMax (min, max){
-  const temp = min;
-  min = max;
-  max = temp;
-}
-
-randomNumber(4, 6);
-
-
-function randomPosition (min, max, decimalPoint) {
-  if ((min > max) && ((min >= 0) && (max >= 0))){
-    swapMinMax(min, max);
-    return ((Math.random() * (max - min)) + min).toFixed(decimalPoint);
-  }
-
-  else if ((min >= 0) && (max >= 0)){
-    return ((Math.random() * (max - min)) + min).toFixed(decimalPoint);
-  }
-
-  return NaN;
-}
-
-randomPosition(7, 10, 4);
+getRandomNumber();
