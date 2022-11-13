@@ -1,6 +1,6 @@
 import { getRandomNumber } from './util.js';
 
-const OFFER_COUNTER = 10;
+const OFFER_COUNTER = 1;
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIMES = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
