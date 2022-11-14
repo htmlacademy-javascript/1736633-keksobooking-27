@@ -1,6 +1,6 @@
 import { getRandomNumber } from './util.js';
 
-const OFFER_COUNTER = 1;
+const OFFER_COUNTER = 10;
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIMES = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -43,7 +43,7 @@ const createOffer = () => {
     },
     offer: {
       title: 'Гостиница "у кекса"',
-      addres: `${location.lat} , ${location.lng}`,
+      address: `${location.lat} , ${location.lng}`,
       price: getRandomNumber(1, 10000),
       type: TYPES[getRandomNumber(1, TYPES.length - 1)],
       rooms: getRandomNumber(1, 4),
