@@ -1,36 +1,51 @@
+import { addValidator, validateForm, resetValidation } from './form-validation.js';
+
 const offerForm = document.querySelector('.ad-form');
 
-const pristine = new Pristine(offerForm, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  errorTextParent: 'ad-form__element',
-});
-
-// const minValueType = {
-//   bungalow: 0,
-//   flat: 1000,
-//   hotel: 3000,
-//   house: 5000,
-//   palace: 10000
-// };
-
-const roomField = document.querySelector('[name="rooms"]');
-const capacityField = document.querySelector('[name="capacity"]');
-const roomOption = {
-  '1': ['1'],
-  '2': ['2', '1'],
-  '3': ['3', '2', '1'],
-  '100': ['0']
+//тип жилья
+const priceField = document.querySelector('#price');
+const selectType = offerForm.querySelector('#type');
+const minValueType = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
 };
 
-function validateRoom() {
-  return roomOption[roomField.value].includes(capacityField.value);
-}
+const onTypeFieldChange = (evt) => {
+  priceField.min = minValueType[evt.target.value];
+  priceField.placeholder = minValueType[evt.target.value];
+};
 
-pristine.addValidator(roomField, validateRoom);
-pristine.addValidator(capacityField, validateRoom);
+// время
+const timeIn = offerForm.querySelector('#timein');
+const timeOut = offerForm.querySelector('#timeout');
 
-offerForm.addEventListener('submit', (evt) => {
+const onTimeInChange = () => (timeOut.value = timeIn.value);
+const onTimeOutChange = () => (timeIn.value = timeOut.value);
+
+const onFormSubmit = (evt) => {
   evt.preventDefault();
-  pristine.validate();
-});
+
+  validateForm();
+};
+
+const onFormReset = () => {
+  resetValidation();
+};
+
+const addListeners = () => {
+  timeIn.addEventListener('change', onTimeInChange);
+  timeOut.addEventListener('change', onTimeOutChange);
+  selectType.addEventListener('change', onTypeFieldChange);
+  offerForm.addEventListener('submit', onFormSubmit);
+  offerForm.addEventListener('reset', onFormReset);
+};
+
+const addAdFormAction = () => {
+  addListeners();
+  addValidator();
+};
+
+export { addAdFormAction };
