@@ -13,9 +13,33 @@ const minValueType = {
   palace: 10000
 };
 
+//цена слайдер
+const sliderElement = offerForm.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 1000,
+    max: 100000,
+  },
+  start: 1000,
+  step: 500,
+  connect: 'lower',
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceField.value = sliderElement.noUiSlider.get();
+});
+
 const onTypeFieldChange = (evt) => {
   priceField.min = minValueType[evt.target.value];
-  priceField.placeholder = minValueType[evt.target.value];
+  priceField.value = minValueType[evt.target.value];
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: minValueType[evt.target.value],
+      max: 100000
+    },
+    start: minValueType[evt.target.value]
+  });
 };
 
 // время
@@ -24,6 +48,13 @@ const timeOut = offerForm.querySelector('#timeout');
 
 const onTimeInChange = () => (timeOut.value = timeIn.value);
 const onTimeOutChange = () => (timeIn.value = timeOut.value);
+
+//координаты
+const addressField = offerForm.querySelector('#address');
+
+const setAddress = ({ lat, lng }) => {
+  addressField.value = `${lat.toFixed(6)} , ${lng.toFixed(6)}`;
+};
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
@@ -48,4 +79,4 @@ const addAdFormAction = () => {
   addValidator();
 };
 
-export { addAdFormAction };
+export { addAdFormAction, setAddress };

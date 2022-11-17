@@ -1,10 +1,20 @@
-import { createCard } from './create-popup.js';
 import { createOffers } from './create-offers.js';
-import { addAdFormAction } from './form-offers.js';
+import { setAddress, addAdFormAction } from './form-offers.js';
+import { initMap, setOnMapLoad, setOnPinMove, setPins } from './create-map.js';
 
-const map = document.querySelector('.map__canvas');
-const offer = createOffers()[0];
+const START_COORDINATION = {
+  lat: 35.66023,
+  lng: 139.73007
+};
 
-map.append(createCard(offer));
+const offers = createOffers();
+
+setOnMapLoad(() => {
+  setPins(offers);
+  setAddress(START_COORDINATION);
+  setOnPinMove(setAddress);
+});
+
+initMap(START_COORDINATION);
 
 addAdFormAction();
