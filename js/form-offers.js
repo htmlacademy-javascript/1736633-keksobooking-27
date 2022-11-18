@@ -1,4 +1,5 @@
 import { addValidator, validateForm, resetValidation } from './form-validation.js';
+import { resetMap } from './create-map.js';
 
 const offerForm = document.querySelector('.ad-form');
 
@@ -64,6 +65,7 @@ const onFormSubmit = (evt) => {
 
 const onFormReset = () => {
   resetValidation();
+  resetMap();
 };
 
 const addListeners = () => {

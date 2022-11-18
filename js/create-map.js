@@ -1,73 +1,98 @@
 import { createCard } from './create-popup.js';
+import { createOffers } from './create-offers.js';
+import { addAdFormAction } from './form-offers.js';
+import { enableAddForm, enableFilterForm } from './page-states.js';
 
-const OFFERS_COUNT = 10;
-const map = L.map('map-canvas');
-const markerGroup = L.layerGroup().addTo(map);
-
-const mainPin = L.icon({
-  iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
-});
-
-const itemPin = L.icon({
-  iconUrl: './img/pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
-});
-
-const mainPinMarker = L.marker(
-  {
-    lat: 0,
-    lng: 0,
-  },
-  {
-    draggable: true,
-    icon: mainPin,
-  }
-);
-
-const initMap = (latLng) => {
-  map.setView(latLng, 10);
-
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>',
-    },
-  ).addTo(map);
-
-  mainPinMarker.setLatLng(latLng);
-  mainPinMarker.addTo(map);
+const START_COORDINATION = {
+  lat: 35.66023,
+  lng: 139.73007
 };
 
-const createPinMarkers = (offers) => {
-  offers.forEach((offer) => {
-    const marker = L.marker(
-      {
-        lat: offer.location.lat,
-        lng: offer.location.lng,
-      },
-      {
-        icon: itemPin,
-      }
-    );
+const OFFERS_COUNT = 10;
+const DECIMALS = 5;
+const MAP_ZOOM = 12;
 
+const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
+const data = createOffers();
+
+const addressInput = document.querySelector('#address');
+
+let interactiveMarker;
+
+const setStartAddressValue = () => {
+  addressInput.value = `${START_COORDINATION.lat}, ${START_COORDINATION.lng}`;
+};
+
+const setLocation = (target) => {
+  const location = target.getLatLng();
+  addressInput.value = `${location.lat.toFixed(DECIMALS)}, ${location.lng.toFixed(DECIMALS)}`;
+};
+
+// eslint-disable-next-line no-shadow
+const createPinMarkers = (data) => {
+  markerGroup.addTo(map);
+  data.slice(0, OFFERS_COUNT).forEach((offer) => {
+    const marker = L.marker(
+      offer.location,
+      {
+        icon: L.icon({
+          iconUrl: './img/pin.svg',
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+        }),
+      },
+    );
     marker.addTo(markerGroup).bindPopup(createCard(offer));
   });
 };
 
-const setPins = (offers) => {
-  markerGroup.clearLayers();
-  createPinMarkers(offers.slice(0, OFFERS_COUNT));
+const onMarkerMove = (evt) => setLocation(evt.target);
+
+const resetMap = () => {
+  interactiveMarker.setLatLng(START_COORDINATION);
+  map.setView(START_COORDINATION, MAP_ZOOM);
+  setTimeout(() => setStartAddressValue());
 };
 
-const setOnMapLoad = (cb) => {
-  map.on('load', cb);
+const activateAddForm = () => {
+  setStartAddressValue();
+  addAdFormAction();
+  enableAddForm();
 };
 
-const setOnPinMove = (cb) => {
-  mainPinMarker.on('move', (evt) => cb(evt.target.getLatLng()));
+// eslint-disable-next-line no-shadow
+const getDataCallback = (data) => {
+  createPinMarkers(data);
+  enableFilterForm();
 };
 
-export { initMap, setOnMapLoad, setOnPinMove, setPins };
+const initMap = () => {
+  map.on('load', () => {
+    activateAddForm();
+    getDataCallback(data);
+  })
+    .setView(START_COORDINATION, MAP_ZOOM);
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      foo: 'bar',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(map);
+
+  interactiveMarker = L.marker(START_COORDINATION,
+    {
+      draggable: 'true',
+      icon: L.icon({
+        iconUrl: './img/main-pin.svg',
+        iconSize: [52, 52],
+        iconAnchor: [26, 52],
+      }),
+    }).addTo(map);
+
+  interactiveMarker.on('move', onMarkerMove);
+};
+
+export { initMap, resetMap };
