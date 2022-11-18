@@ -29,7 +29,6 @@ const setLocation = (target) => {
   addressInput.value = `${location.lat.toFixed(DECIMALS)}, ${location.lng.toFixed(DECIMALS)}`;
 };
 
-// eslint-disable-next-line no-shadow
 const createPinMarkers = (data) => {
   markerGroup.addTo(map);
   data.slice(0, OFFERS_COUNT).forEach((offer) => {
@@ -61,7 +60,6 @@ const activateAddForm = () => {
   enableAddForm();
 };
 
-// eslint-disable-next-line no-shadow
 const getDataCallback = (data) => {
   createPinMarkers(data);
   enableFilterForm();
