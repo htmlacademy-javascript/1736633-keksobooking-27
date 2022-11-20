@@ -1,5 +1,5 @@
-const filterForm = document.querySelector('.map__filter');
-const filterFormItems = document.querySelectorAll('.map__filter select, fieldset');
+const filterForm = document.querySelector('.map__filters');
+const filterFormItems = document.querySelectorAll('.map__filters select, fieldset');
 const adForm = document.querySelector('.ad-form');
 const adFormItems = document.querySelectorAll('.ad-form fieldset');
 
