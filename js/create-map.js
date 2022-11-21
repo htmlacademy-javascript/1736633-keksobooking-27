@@ -2,7 +2,7 @@ import { createCard } from './create-popup.js';
 import { addAdFormAction } from './form-offers.js';
 import { enableAddForm, enableFilterForm } from './page-states.js';
 import { getData } from './api.js';
-import { renderGetErrorMessage } from './modal.js';
+import { renderGetErrorMessage } from './modal-error.js';
 
 const START_COORDINATION = {
   lat: 35.66023,

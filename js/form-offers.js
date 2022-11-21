@@ -1,7 +1,8 @@
 import { addValidator, validateForm, resetValidation } from './form-validation.js';
 import { resetMap } from './create-map.js';
 import { sendData } from './api.js';
-import { renderPostErrorMessage, renderSuccessMessage } from './modal.js';
+import { renderPostErrorMessage } from './modal-error.js';
+import { renderSuccessMessage } from './modal-success.js';
 import { clearImageBlocks, addPhotoInputsListeners } from './preload-images.js';
 
 const POST_URL = 'https://27.javascript.pages.academy/keksobooking';
@@ -58,6 +59,7 @@ const onTimeOutChange = () => (timeIn.value = timeOut.value);
 const sendDataSuccessCallback = () => {
   renderSuccessMessage();
   adFormSubmitBtn.disabled = false;
+  offerForm.reset();
   resetValidation();
   resetMap();
 };
