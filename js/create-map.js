@@ -1,7 +1,8 @@
 import { createCard } from './create-popup.js';
-import { createOffers } from './create-offers.js';
 import { addAdFormAction } from './form-offers.js';
 import { enableAddForm, enableFilterForm } from './page-states.js';
+import { getData } from './api.js';
+import { renderGetErrorMessage } from './modal-error.js';
 
 const START_COORDINATION = {
   lat: 35.66023,
@@ -11,10 +12,10 @@ const START_COORDINATION = {
 const OFFERS_COUNT = 10;
 const DECIMALS = 5;
 const MAP_ZOOM = 12;
+const GET_URL = 'https://27.javascript.pages.academy/keksobooking/data';
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
-const data = createOffers();
 
 const addressInput = document.querySelector('#address');
 
@@ -68,7 +69,7 @@ const getDataCallback = (data) => {
 const initMap = () => {
   map.on('load', () => {
     activateAddForm();
-    getDataCallback(data);
+    getData(GET_URL, getDataCallback, renderGetErrorMessage);
   })
     .setView(START_COORDINATION, MAP_ZOOM);
 
