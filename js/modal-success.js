@@ -1,20 +1,25 @@
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-let successClone;
+let successClone = null;
 
 const createSuccess = () => {
   successClone = successTemplate.cloneNode(true);
-  successClone.addEventListener('click', () => successClone.remove());
   document.body.append(successClone);
+  successClone.addEventListener('click', closeSuccess);
 };
 
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape' && successClone) {
-    evt.preventDefault();
-    successClone.remove();
-    document.removeEventListener('keydown', onDocumentKeydown);
+    closeSuccess(evt);
   }
 };
+
+function closeSuccess(evt) {
+  evt.preventDefault();
+  document.removeEventListener('keydown', onDocumentKeydown);
+  successClone.remove();
+  successClone = null;
+}
 
 const renderSuccessMessage = () => {
   createSuccess();
