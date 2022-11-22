@@ -1,9 +1,7 @@
 const getData = (url, onSuccess, onFail) => {
   fetch(url)
     .then((response) => response.json())
-    .then((data) => {
-      onSuccess(data);
-    })
+    .then((data) => onSuccess(data))
     .catch(() => {
       onFail();
     });

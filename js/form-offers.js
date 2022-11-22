@@ -22,8 +22,8 @@ const minValueType = {
 };
 
 //цена слайдер
-const sliderElement = offerForm.querySelector('.ad-form__slider');
-noUiSlider.create(sliderElement, {
+const slider = offerForm.querySelector('.ad-form__slider');
+noUiSlider.create(slider, {
   range: {
     min: 1000,
     max: 100000,
@@ -33,14 +33,14 @@ noUiSlider.create(sliderElement, {
   connect: 'lower',
 });
 
-sliderElement.noUiSlider.on('update', () => {
-  priceField.value = sliderElement.noUiSlider.get();
+slider.noUiSlider.on('update', () => {
+  priceField.value = slider.noUiSlider.get();
 });
 
 const onTypeFieldChange = (evt) => {
   priceField.min = minValueType[evt.target.value];
   priceField.value = minValueType[evt.target.value];
-  sliderElement.noUiSlider.updateOptions({
+  slider.noUiSlider.updateOptions({
     range: {
       min: minValueType[evt.target.value],
       max: 100000
@@ -56,12 +56,18 @@ const timeOut = offerForm.querySelector('#timeout');
 const onTimeInChange = () => (timeOut.value = timeIn.value);
 const onTimeOutChange = () => (timeIn.value = timeOut.value);
 
-const sendDataSuccessCallback = () => {
-  renderSuccessMessage();
-  adFormSubmitBtn.disabled = false;
+const clearForms = () => {
   offerForm.reset();
   resetValidation();
   resetMap();
+  clearImageBlocks();
+  slider.noUiSlider.reset();
+};
+
+const sendDataSuccessCallback = () => {
+  renderSuccessMessage();
+  adFormSubmitBtn.disabled = false;
+  clearForms();
 };
 
 const sendDataErrorCallback = () => {
@@ -77,11 +83,7 @@ const onFormSubmit = (evt) => {
   }
 };
 
-const onFormReset = () => {
-  resetValidation();
-  resetMap();
-  clearImageBlocks();
-};
+const onFormReset = () => clearForms();
 
 const addListeners = () => {
   addPhotoInputsListeners();

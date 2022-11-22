@@ -59,33 +59,35 @@ const createRooms = (firstData, secondData, parent, selector) => {
   element.textContent = `${firstText}${divider}${secondText}`;
 };
 
-const createFeatures = (data, parent, selector, parentSelector) => {
-  const parentItem = parent.querySelector(parentSelector);
+const createFeatures = (data, parent, selector) => {
+  const element = parent.querySelector(selector);
   if (!data) {
-    parentItem.remove();
+    element.remove();
     return;
   }
-  const elementList = parentItem.querySelectorAll(selector);
-  const modifiers = data.map((dataEl) => `popup__features--${dataEl}`);
-  elementList.forEach((element) => {
-    const modifier = element.classList[1];
-    if (!modifiers.includes(modifier)) {
-      element.remove();
-    }
+  const elementItem = document.createElement('li');
+  elementItem.classList.add('popup__feature');
+  element.innerHTML = '';
+  data.forEach((item) => {
+    const cloningElement = elementItem.cloneNode(true);
+    cloningElement.classList.add(`popup__feature--${item}`);
+    element.append(cloningElement);
   });
 };
 
-const createPhotos = (data, parent, selector, parentSelector) => {
-  const photoParent = parent.querySelector(parentSelector);
-  const photoItem = photoParent.querySelector(selector);
+const createPhotos = (data, parent, selector) => {
+  const element = parent.querySelector(selector);
   if (!data) {
-    photoParent.remove();
+    element.remove();
+    return;
   }
-  data.forEach((photoSrc) => {
-    photoItem.remove();
-    const photoClone = photoItem.cloneNode(true);
-    photoParent.appendChild(photoClone);
-    photoClone.src = photoSrc;
+  const photo = element.querySelector('img');
+  element.innerHTML = '';
+
+  data.forEach((item) => {
+    const cloningElement = photo.cloneNode(true);
+    cloningElement.src = item;
+    element.append(cloningElement);
   });
 };
 
@@ -99,8 +101,8 @@ const createCard = ({ author, offer }) => {
   createRooms(offer.rooms, offer.guests, offerClone, '.popup__text--capacity');
   createChecks(offer.checkin, offer.checkout, offerClone, '.popup__text--time');
   createType(offer.type, offerClone, '.popup__type');
-  createFeatures(offer.features, offerClone, '.popup__feature', '.popup__features');
-  createPhotos(offer.photos, offerClone, '.popup__photo', '.popup__photos');
+  createFeatures(offer.features, offerClone, '.popup__feature');
+  createPhotos(offer.photos, offerClone, '.popup__photos');
 
   return offerClone;
 };
