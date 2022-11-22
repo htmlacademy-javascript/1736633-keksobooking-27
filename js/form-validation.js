@@ -1,4 +1,6 @@
-const MIN_TITLE_LENGTH = 20;
+import { minValueType } from './form-offers.js';
+
+const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
 const roomsOption = {
@@ -6,14 +8,6 @@ const roomsOption = {
   2: ['2', '1'],
   3: ['3', '2', '1'],
   100: ['0'],
-};
-
-const minValueType = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000
 };
 
 const offerForm = document.querySelector('.ad-form');
@@ -38,17 +32,15 @@ const createPriceError = () => `Цена должна быть больше ${mi
 
 const validateRooms = () => roomsOption[roomsField.value].includes(capacityField.value);
 const createRoomsError = () => {
-  if (roomsField.value === '1') {
-    return 'Размещение для одного гостя';
-  }
-  if (roomsField.value === '2') {
-    return 'Размещение от одного гостя до двух гостей';
-  }
-  if (roomsField.value === '3') {
-    return 'Размещение от одного гостя до трех гостей';
-  }
-  if (roomsField.value === '100') {
-    return 'Не для гостей';
+  switch (roomsField.value) {
+    case '1':
+      return 'Размещение для одного гостя';
+    case '2':
+      return 'Размещение от одного гостя до двух гостей';
+    case '3':
+      return 'Размещение от одного гостя до трех гостей';
+    case '100':
+      return 'Не для гостей';
   }
 };
 

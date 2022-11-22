@@ -99,4 +99,4 @@ const addAdFormAction = () => {
   addValidator();
 };
 
-export { addAdFormAction };
+export { addAdFormAction, minValueType };
